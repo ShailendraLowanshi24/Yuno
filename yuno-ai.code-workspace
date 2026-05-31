@@ -1,0 +1,72 @@
+{
+  "folders": [
+    { "name": "Root", "path": "." },
+    { "name": "Backend", "path": "backend" },
+    { "name": "Frontend", "path": "frontend" }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "${workspaceFolder:Root}/.venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2,
+    "[python]": { "editor.tabSize": 4 },
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/*.pyc": true,
+      "**/node_modules": true,
+      "**/.venv": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.pylance",
+      "bradlc.vscode-tailwindcss",
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "ms-python.black-formatter"
+    ]
+  },
+  "launch": {
+    "configurations": [
+      {
+        "name": "Backend (uvicorn)",
+        "type": "python",
+        "request": "launch",
+        "module": "uvicorn",
+        "args": ["main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"],
+        "cwd": "${workspaceFolder:Backend}",
+        "envFile": "${workspaceFolder:Root}/.env",
+        "justMyCode": false
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Start Backend",
+        "type": "shell",
+        "command": "source ../.venv/bin/activate && python -m uvicorn main:app --reload --port 8000",
+        "options": { "cwd": "${workspaceFolder:Backend}" },
+        "group": "build",
+        "presentation": { "panel": "new", "name": "Backend" }
+      },
+      {
+        "label": "Start Frontend",
+        "type": "shell",
+        "command": "npm run dev",
+        "options": { "cwd": "${workspaceFolder:Frontend}" },
+        "group": "build",
+        "presentation": { "panel": "new", "name": "Frontend" }
+      },
+      {
+        "label": "Run Tests",
+        "type": "shell",
+        "command": "source .venv/bin/activate && pytest -v",
+        "options": { "cwd": "${workspaceFolder:Root}" },
+        "group": "test"
+      }
+    ]
+  }
+}
